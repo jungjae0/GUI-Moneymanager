@@ -1,12 +1,12 @@
-from tkinter import *
+import tkinter as tk
 from tkinter import ttk
 
 class Notebook:
 
     def __init__(self,title):
-        self.root = Tk()
-        self.root.title(title)
-        self.notebook = ttk.Notebook(self.root)
+        self.window = tk.Tk()
+        self.window.title(title)
+        self.notebook = ttk.Notebook(self.window)
 
     def add_tab(self,title,text):
         frame = ttk.Frame(self.notebook)
@@ -23,6 +23,6 @@ nb.add_tab('Frame One','This is on Frame One')
 nb.add_tab('Frame Two','This is on Frame Two')
 nb.run()
 
-# add_tab을 Fram1으로 바꾸고 하면 될 것 같습니다.. 
+# add_tab을 Tab1으로 바꾸고 하면 될 것 같습니다.. 
 # Tab 생성부터 초면이라 좀 당황스럽네요...
 # 괜히 이걸 하자고 했나...!화이팅...!
