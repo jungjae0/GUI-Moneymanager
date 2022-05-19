@@ -16,3 +16,6 @@ messagebox에서 입력한 이름에 따라
 3. 가계부<br>
 
 4. 지출그래프(앞에 항목들이 다 완성되면)
+
+![image](https://user-images.githubusercontent.com/93760723/169250130-238aca28-cb99-454f-951e-e59eaf68f276.png)
+
