@@ -16,7 +16,7 @@ class Notebook:
         self.notebook.pack()
 
     def run(self):
-        self.root.mainloop()
+        self.window.mainloop()
 
 nb = Notebook('Example')
 nb.add_tab('Frame One','This is on Frame One')
