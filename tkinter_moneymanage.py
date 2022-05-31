@@ -55,7 +55,7 @@ class Moneymanage:
         self.ent_date = tk.Entry(self.fr_forms, textvariable=self.date, width=30)
         self.ent_date.grid(row=0, column=1)
         self.combobox = ttk.Combobox(self.fr_forms, textvariable=self.category, width=5)
-        self.combobox['values'] = ["수입","식비","생활비", "교통비", "저축", "문화생활비", "기타"]
+        self.combobox['values'] = ["용돈","급여","식비","생활비", "교통비", "저축", "문화생활비", "기타"]
         self.combobox.current(0)
         self.combobox.grid(row=3,column=1)
         self.ent_income = tk.Entry(self.fr_forms, textvariable=self.income, width=30)
@@ -87,19 +87,24 @@ class Moneymanage:
         self.window.mainloop()
 
     def data_add(self):
-        if self.ent_date.get() =="" or self.ent_income.get() == "" or self.ent_outcome.get() == "":
-            self.txt_result.config(text="FAIL_FILL THE VALUES", fg="red")
-        else:
-            self.cur.execute("INSERT INTO `money_manager` (date, income, outcome, category) VALUES(?, ?, ?, ?)",
-                             (self.ent_date.get(), self.ent_income.get(), self.ent_outcome.get(), self.combobox.get()))
-            self.conn.commit()
-            self.date.set("")
-            self.category.set("")
-            self.income.set("")
-            self.outcome.set("")
-            self.cur.close()
-            self.conn.close()
-            self.txt_result.config(text="COMPLETE", fg="green")
+        try:
+            if self.ent_date.get() =="" or self.ent_income.get() == "" or self.ent_outcome.get() == "":
+                self.txt_result.config(text="Fail : Fill the income or outcome interger", fg="red")
+
+            else:
+                self.cur.execute("INSERT INTO `money_manager` (date, income, outcome, category) VALUES(?, ?, ?, ?)",
+                                 (self.ent_date.get(), self.ent_income.get(), self.ent_outcome.get(), self.combobox.get()))
+                self.conn.commit()
+                self.date.set("")
+                self.category.set("")
+                self.income.set("")
+                self.outcome.set("")
+                self.cur.close()
+                self.conn.close()
+                self.txt_result.config(text="Complete", fg="green")
+
+        except sqlite3.OperationalError:
+            self.txt_result.config(text="Fail : values type error", fg="red")
 
     def data_graph(self):
         pass
