@@ -123,8 +123,8 @@ class Moneymanage:
 
     def data_display(self):
         self.tree.delete(*self.tree.get_children())
-        for row in self.fetch():
-            self.tree.insert("", 0, values=row)
+        for i, row in enumerate(self.fetch()):
+            self.tree.insert("", i, values=row)
 
     def data_set(self):
         self.date.set("")
@@ -273,7 +273,7 @@ class Moneymanage:
         fetch = self.cur.fetchall()
         self.tree.delete(*self.tree.get_children())
         for data in fetch:
-            self.tree.insert('', 'end', values=(data[1],data[2],data[3],data[4]))
+            self.tree.insert('', 'end', values=(data[0],data[1],data[2],data[3],data[4]))
         self.txt_result.config(text="Successfully read data", fg="black")
 
 
