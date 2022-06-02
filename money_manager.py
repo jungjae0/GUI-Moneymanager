@@ -59,8 +59,8 @@ class Moneymanage:
         ##### BUTTON #####
         self.btn_add = tk.Button(self.fr_button, width=10, text="Add", command=self.data_add)
         self.btn_add.pack(side=tk.LEFT)
-        self.btn_read = tk.Button(self.fr_button, width=10, text="Read", command=self.data_read)
-        self.btn_read.pack(side=tk.LEFT)
+        # self.btn_read = tk.Button(self.fr_button, width=10, text="Read", command=self.data_read)
+        # self.btn_read.pack(side=tk.LEFT)
         self.btn_delete = tk.Button(self.fr_button, width=10, text="Delete", command=self.data_delete)
         self.btn_delete.pack(side=tk.LEFT)
         self.btn_graph = tk.Button(self.fr_button, width=10, text="Graph", command=self.data_graph)
@@ -181,7 +181,6 @@ class Moneymanage:
 
             f = open(f"{self.user}.csv", encoding='utf-8')
             lines = f.readlines()
-            date = [(x.split(",")[2]) for x in lines[1:]]
             outcome = [int(x.split(",")[4]) for x in lines[1:]]
             category_1 = [str(x.split(",")[5]) for x in lines[1:]]
             category_2 = ''.join(map(str, category_1))
@@ -268,13 +267,13 @@ class Moneymanage:
         self.data_set()
         self.data_display()
 
-    def data_read(self):
-        self.cur.execute(f"SELECT * from {self.user}")
-        fetch = self.cur.fetchall()
-        self.tree.delete(*self.tree.get_children())
-        for data in fetch:
-            self.tree.insert('', 'end', values=(data[0],data[1],data[2],data[3],data[4]))
-        self.txt_result.config(text="Successfully read data", fg="black")
+    # def data_read(self):
+    #     self.cur.execute(f"SELECT * from {self.user}")
+    #     fetch = self.cur.fetchall()
+    #     self.tree.delete(*self.tree.get_children())
+    #     for data in fetch:
+    #         self.tree.insert('', 'end', values=(data[0],data[1],data[2],data[3],data[4]))
+    #     self.txt_result.config(text="Successfully read data", fg="black")
 
 
 def main():
