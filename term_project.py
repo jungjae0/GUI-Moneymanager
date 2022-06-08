@@ -74,18 +74,19 @@ class Moneymanage:
         self.ent_money = tk.Entry(self.fr_forms, textvariable= self.money, width=30)
         self.ent_money.grid(row=2, column=1)
         self.combobox = ttk.Combobox(self.fr_forms, textvariable=self.category, width=5)
-        self.combobox['values'] = ['용돈','급여','식비', '교통비', '쇼핑비', '저축', '문화생활비', '기타']
+        self.combobox['values'] = ['allowance','salary','food', 'transportation', 'apparel', 'saving', 'entertainment', 'etc']
         self.combobox.current(0)
         self.combobox.grid(row=3,column=1)
 
         ##### TABLE #####
-        self.tree = ttk.Treeview(self.fr_table, columns=("Date", "Balance", "Money", "Category"),
+        self.tree = ttk.Treeview(self.fr_table, columns=("ID","Date", "Balance", "Money", "Category"),
                             selectmode="extended", height=500)
+        self.tree.heading('ID', text="ID")
         self.tree.heading('Date', text="Date")
         self.tree.heading('Balance', text="Balance")
         self.tree.heading('Money', text="Money")
         self.tree.heading('Category', text="Category")
-        self.tree.column('#0', minwidth=0,width=0)
+        self.tree.column('#0', minwidth=0,width=30)
         self.tree.column('#1', minwidth=0,width=100)
         self.tree.column('#2', minwidth=0,width=100)
         self.tree.column('#3', minwidth=0,width=100)
@@ -172,9 +173,8 @@ class Moneymanage:
         df = pd.DataFrame.from_records(data=rows, columns=cols)
         df.to_csv(f'{self.user}.csv', sep=",", na_rep='NaN', encoding='utf-8-sig')
 
-        plt.rcParams['font.family'] = ['NanumGothic', 'sans-serif']
         plt.rcParams['axes.unicode_minus'] = False
-        classes = ['식비', '교통비', '쇼핑비', '저축', '문화생활비', '기타']
+        classes = ['food', 'transportation', 'apparel', 'saving', 'entertainment', 'etc']
 
         f = open(f"{self.user}.csv", encoding='utf-8')
         lines = f.readlines()
@@ -186,9 +186,9 @@ class Moneymanage:
 
         a_1 = []
         x = []
-        if "식비" in category:
+        if "food" in category:
             for i in range(len(category)):
-                if category[i] == "식비":
+                if category[i] == "food":
                     x.append(i)
         for i in range(len(x)):
             a_1.append(outcome[x[i]])
@@ -196,9 +196,9 @@ class Moneymanage:
 
         b_1 = []
         y = []
-        if "교통비" in category:
+        if "transportation" in category:
             for i in range(len(category)):
-                if category[i] == "교통비":
+                if category[i] == "transportation":
                     y.append(i)
         for i in range(len(y)):
             b_1.append(outcome[y[i]])
@@ -206,9 +206,9 @@ class Moneymanage:
 
         c_1 = []
         z = []
-        if "문화생활비" in category:
+        if "entertainment" in category:
             for i in range(len(category)):
-                if category[i] == "문화생활비":
+                if category[i] == "entertainment":
                     z.append(i)
         for i in range(len(z)):
             c_1.append(outcome[z[i]])
@@ -216,9 +216,9 @@ class Moneymanage:
 
         d_1 = []
         l = []
-        if "쇼핑비" in category:
+        if "apparel" in category:
             for i in range(len(category)):
-                if category[i] == "쇼핑비":
+                if category[i] == "apparel":
                     l.append(i)
         for i in range(len(l)):
             d_1.append(outcome[l[i]])
@@ -226,9 +226,9 @@ class Moneymanage:
 
         e_1 = []
         m = []
-        if "저축" in category:
+        if "saving" in category:
             for i in range(len(category)):
-                if category[i] == "저축":
+                if category[i] == "saiving":
                     m.append(i)
         for i in range(len(m)):
             e_1.append(outcome[m[i]])
@@ -236,9 +236,9 @@ class Moneymanage:
 
         f_1 = []
         n = []
-        if "기타" in category:
+        if "etc" in category:
             for i in range(len(category)):
-                if category[i] == "기타":
+                if category[i] == "etc":
                     n.append(i)
         for i in range(len(n)):
             f_1.append(outcome[n[i]])
@@ -250,7 +250,6 @@ class Moneymanage:
 
         if sum(slices) != 0:
             plt.pie(slices, autopct='%2.3f%%', colors=colors, labels=classes)
-
             plt.legend(loc=(1, 0.7))
             plt.show()
 
