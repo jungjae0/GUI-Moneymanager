@@ -252,8 +252,8 @@ class Moneymanage:
             plt.pie(slices, autopct='%2.3f%%', colors=colors, labels=classes)
             plt.legend(loc=(1, 0.7))
             plt.show()
-
-        self.txt_result.config(text="Faile : Data is not available.", fg="red")
+        else:
+            self.txt_result.config(text="Faile : Data is not available.", fg="red")
 
 def main():
     Moneymanage()
