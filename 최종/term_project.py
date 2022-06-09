@@ -247,13 +247,23 @@ class Moneymanage:
         slices = [a, b, c, d, e, f]
 
         colors = ['lightblue', 'green', 'orange', 'Yellow', 'gold', 'pink']
+        
+        selected_slices = []
+        selected_colors = []
+        selected_classes = []
+
+        for slice, color, klass in zip(slices, colors, classes):
+            if slice > 0:
+                selected_slices.append(slice)
+                selected_colors.append(color)
+                selected_classes.append(klass)
 
         if sum(slices) != 0:
-            plt.pie(slices, autopct='%2.3f%%', colors=colors, labels=classes)
+            plt.pie(selected_slices, autopct='%2.3f%%', colors=selected_colors, labels=selected_classes)
             plt.legend(loc=(1, 0.7))
             plt.show()
         else:
-            self.txt_result.config(text="Faile : Data is not available.", fg="red")
+            self.txt_result.config(text="Fail : Data is not available.", fg="red")
 
 def main():
     Moneymanage()
