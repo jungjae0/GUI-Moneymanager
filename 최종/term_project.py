@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from tkinter import simpledialog
 
+
 def username(text):
     window = tk.Tk()
     window.withdraw()
@@ -12,8 +13,10 @@ def username(text):
     window.destroy()
     return user_input
 
+
 class Moneymanage:
     user = username("name")
+
     def __init__(self):
         self.window = tk.Tk()
         self.window.title("가계부")
@@ -26,9 +29,9 @@ class Moneymanage:
         self.balance = tk.StringVar(self.window)
 
         ##### FRAME #####
-        self.fr_title = tk.Frame(self.window, width=700, height=50,bd=8, relief="raise")
+        self.fr_title = tk.Frame(self.window, width=700, height=50, bd=8, relief="raise")
         self.fr_title.pack(side=tk.TOP)
-        self.fr_table = tk.Frame(self.window, width=500, height=500,bd=8, relief="raise")
+        self.fr_table = tk.Frame(self.window, width=500, height=500, bd=8, relief="raise")
         self.fr_table.pack(side=tk.RIGHT)
         self.fr_input = tk.Frame(self.window, width=500, height=500, bd=8, relief="raise")
         self.fr_input.pack(side=tk.LEFT)
@@ -68,35 +71,39 @@ class Moneymanage:
         ##### VALUES #####
         self.ent_date = tk.Entry(self.fr_forms, textvariable=self.date, width=30)
         self.ent_date.grid(row=0, column=1)
-        self.income = tk.Radiobutton(self.fr_radiobutton, text = "Income", variable=self.balance, value="income").pack(side=tk.LEFT)
-        self.outcome = tk.Radiobutton(self.fr_radiobutton, text = "Outcome", variable=self.balance, value="outcome").pack(side=tk.LEFT)
+        self.income = tk.Radiobutton(self.fr_radiobutton, text="Income", variable=self.balance, value="income").pack(
+            side=tk.LEFT)
+        self.outcome = tk.Radiobutton(self.fr_radiobutton, text="Outcome", variable=self.balance, value="outcome").pack(
+            side=tk.LEFT)
         self.fr_radiobutton.grid(row=1, column=1)
-        self.ent_money = tk.Entry(self.fr_forms, textvariable= self.money, width=30)
+        self.ent_money = tk.Entry(self.fr_forms, textvariable=self.money, width=30)
         self.ent_money.grid(row=2, column=1)
         self.combobox = ttk.Combobox(self.fr_forms, textvariable=self.category, width=5)
-        self.combobox['values'] = ['allowance','salary','food', 'transportation', 'apparel', 'saving', 'entertainment', 'etc']
+        self.combobox['values'] = ['allowance', 'salary', 'food', 'transportation', 'apparel', 'saving',
+                                   'entertainment', 'etc']
         self.combobox.current(0)
-        self.combobox.grid(row=3,column=1)
+        self.combobox.grid(row=3, column=1)
 
         ##### TABLE #####
-        self.tree = ttk.Treeview(self.fr_table, columns=("ID","Date", "Balance", "Money", "Category"),
-                            selectmode="extended", height=500)
+        self.tree = ttk.Treeview(self.fr_table, columns=("ID", "Date", "Balance", "Money", "Category"),
+                                 selectmode="extended", height=500)
         self.tree.heading('ID', text="ID")
         self.tree.heading('Date', text="Date")
         self.tree.heading('Balance', text="Balance")
         self.tree.heading('Money', text="Money")
         self.tree.heading('Category', text="Category")
-        self.tree.column('#0', minwidth=0,width=30)
-        self.tree.column('#1', minwidth=0,width=100)
-        self.tree.column('#2', minwidth=0,width=100)
-        self.tree.column('#3', minwidth=0,width=100)
-        self.tree.column('#4', minwidth=0,width=100)
+        self.tree.column('#0', minwidth=0, width=30)
+        self.tree.column('#1', minwidth=0, width=100)
+        self.tree.column('#2', minwidth=0, width=100)
+        self.tree.column('#3', minwidth=0, width=100)
+        self.tree.column('#4', minwidth=0, width=100)
         self.tree.pack()
 
         ##### DATABASE #####
         self.conn = sqlite3.connect(f'{self.user}.db')
         self.cur = self.conn.cursor()
-        self.cur.execute(f"CREATE TABLE IF NOT EXISTS {self.user} (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, date TEXT, balance TEXT, money INT, category TEXT)")
+        self.cur.execute(
+            f"CREATE TABLE IF NOT EXISTS {self.user} (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, date TEXT, balance TEXT, money INT, category TEXT)")
 
         self.data_display()
         self.window.mainloop()
@@ -125,7 +132,7 @@ class Moneymanage:
 
     def data_add(self):
         try:
-            if self.ent_date.get() == "" or self.money.get() == "" or self.balance.get()!="income" and self.balance.get()!="outcome":
+            if self.ent_date.get() == "" or self.money.get() == "" or self.balance.get() != "income" and self.balance.get() != "outcome":
                 self.txt_result.config(text="Fail : Fill the values", fg="red")
 
             else:
@@ -144,19 +151,20 @@ class Moneymanage:
                 outcome = df[df['balance'] == "outcome"]
                 sum_outcome = outcome['money'].sum()
                 total = sum_income - sum_outcome
-                self.txt_total.config(text=f"{total}", fg="blue")
+                self.txt_total.config(text=f"합계 : {total} | 수입 : {sum_income} | 지출 : {sum_outcome}", fg="blue")
                 self.txt_total.grid(row=4, column=1)
 
         except tk.TclError:
             self.txt_result.config(text="Fail : values type error", fg="red")
 
     def data_delete(self):
-        global row
+        global selected_row
         self.tree.delete(*self.tree.get_children())
         for row in self.fetch():
             self.tree.insert("", 0, values=row)
-        self.remove(row[0])
+        self.remove(selected_row[0])
         self.data_set()
+        self.conn.commit()
         self.data_display()
 
     def clear(self):
@@ -247,7 +255,7 @@ class Moneymanage:
         slices = [a, b, c, d, e, f]
 
         colors = ['lightblue', 'green', 'orange', 'Yellow', 'gold', 'pink']
-        
+
         selected_slices = []
         selected_colors = []
         selected_classes = []
@@ -265,8 +273,10 @@ class Moneymanage:
         else:
             self.txt_result.config(text="Fail : Data is not available.", fg="red")
 
+
 def main():
     Moneymanage()
+
 
 if __name__ == '__main__':
     main()
