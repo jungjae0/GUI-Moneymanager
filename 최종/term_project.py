@@ -63,7 +63,7 @@ class Moneymanage:
         self.btn_add.pack(side=tk.LEFT)
         self.btn_delete = tk.Button(self.fr_button, width=10, text="Delete", command=self.data_delete)
         self.btn_delete.pack(side=tk.LEFT)
-        self.btn_graph = tk.Button(self.fr_button, width=10, text="Graph", command=self.data_graph)
+        self.btn_graph = tk.Button(self.fr_button, width=10, text="Graph&CSV", command=self.data_graph)
         self.btn_graph.pack(side=tk.LEFT)
         self.btn_graph = tk.Button(self.fr_button, width=10, text="Clear", command=self.clear)
         self.btn_graph.pack(side=tk.LEFT)
@@ -85,8 +85,12 @@ class Moneymanage:
         self.combobox.grid(row=3, column=1)
 
         ##### TABLE #####
+        scrollbary = tk.Scrollbar(self.fr_table, orient=tk.VERTICAL)
+
         self.tree = ttk.Treeview(self.fr_table, columns=("ID", "Date", "Balance", "Money", "Category"),
                                  selectmode="extended", height=500)
+        scrollbary.config(command=self.tree.yview)
+        scrollbary.pack(side=tk.RIGHT, fill=tk.Y)
         self.tree.heading('ID', text="ID")
         self.tree.heading('Date', text="Date")
         self.tree.heading('Balance', text="Balance")
@@ -104,6 +108,11 @@ class Moneymanage:
         self.cur = self.conn.cursor()
         self.cur.execute(
             f"CREATE TABLE IF NOT EXISTS {self.user} (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, date TEXT, balance TEXT, money INT, category TEXT)")
+
+        self.cur.execute(f"SELECT * FROM {self.user}")
+        self.rows = self.cur.fetchall()
+        self.cols = [column[0] for column in self.cur.description]
+        self.df = pd.DataFrame.from_records(data=self.rows, columns=self.cols)
 
         self.data_display()
         self.window.mainloop()
@@ -142,13 +151,10 @@ class Moneymanage:
                 self.data_set()
                 self.data_display()
                 self.txt_result.config(text="Success", fg="green")
-                self.cur.execute(f"SELECT * FROM {self.user}")
-                rows = self.cur.fetchall()
-                cols = [column[0] for column in self.cur.description]
-                df = pd.DataFrame.from_records(data=rows, columns=cols)
-                income = df[df['balance'] == "income"]
+
+                income = self.df[self.df['balance'] == "income"]
                 sum_income = income['money'].sum()
-                outcome = df[df['balance'] == "outcome"]
+                outcome = self.df[self.df['balance'] == "outcome"]
                 sum_outcome = outcome['money'].sum()
                 total = sum_income - sum_outcome
                 self.txt_total.config(text=f"합계 : {total} | 수입 : {sum_income} | 지출 : {sum_outcome}", fg="blue")
@@ -175,11 +181,7 @@ class Moneymanage:
         self.data_display()
 
     def data_graph(self):
-        self.cur.execute(f"SELECT * FROM {self.user}")
-        rows = self.cur.fetchall()
-        cols = [column[0] for column in self.cur.description]
-        df = pd.DataFrame.from_records(data=rows, columns=cols)
-        df.to_csv(f'{self.user}.csv', sep=",", na_rep='NaN', encoding='utf-8-sig')
+        self.df.to_csv(f'{self.user}.csv', sep=",", na_rep='NaN', encoding='utf-8-sig')
 
         plt.rcParams['axes.unicode_minus'] = False
         classes = ['food', 'transportation', 'apparel', 'saving', 'entertainment', 'etc']
