@@ -164,11 +164,11 @@ class Moneymanage:
             self.txt_result.config(text="Fail : values type error", fg="red")
 
     def data_delete(self):
-        global selected_row
+        global row
         self.tree.delete(*self.tree.get_children())
         for row in self.fetch():
             self.tree.insert("", 0, values=row)
-        self.remove(selected_row[0])
+        self.remove(row[0])
         self.data_set()
         self.conn.commit()
         self.data_display()
