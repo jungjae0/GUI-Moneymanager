@@ -108,12 +108,6 @@ class Moneymanage:
         self.cur = self.conn.cursor()
         self.cur.execute(
             f"CREATE TABLE IF NOT EXISTS {self.user} (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, date TEXT, balance TEXT, money INT, category TEXT)")
-
-        self.cur.execute(f"SELECT * FROM {self.user}")
-        self.rows = self.cur.fetchall()
-        self.cols = [column[0] for column in self.cur.description]
-        self.df = pd.DataFrame.from_records(data=self.rows, columns=self.cols)
-
         self.data_display()
         self.window.mainloop()
         self.cur.close()
@@ -151,10 +145,13 @@ class Moneymanage:
                 self.data_set()
                 self.data_display()
                 self.txt_result.config(text="Success", fg="green")
-
-                income = self.df[self.df['balance'] == "income"]
+                self.cur.execute(f"SELECT * FROM {self.user}")
+                rows = self.cur.fetchall()
+                cols = [column[0] for column in self.cur.description]
+                df = pd.DataFrame.from_records(data=rows, columns=cols)
+                income = df[df['balance'] == "income"]
                 sum_income = income['money'].sum()
-                outcome = self.df[self.df['balance'] == "outcome"]
+                outcome = df[df['balance'] == "outcome"]
                 sum_outcome = outcome['money'].sum()
                 total = sum_income - sum_outcome
                 self.txt_total.config(text=f"합계 : {total} | 수입 : {sum_income} | 지출 : {sum_outcome}", fg="blue")
@@ -181,8 +178,11 @@ class Moneymanage:
         self.data_display()
 
     def data_graph(self):
-        self.df.to_csv(f'{self.user}.csv', sep=",", na_rep='NaN', encoding='utf-8-sig')
-
+        self.cur.execute(f"SELECT * FROM {self.user}")
+        rows = self.cur.fetchall()
+        cols = [column[0] for column in self.cur.description]
+        df = pd.DataFrame.from_records(data=rows, columns=cols)
+        df.to_csv(f'{self.user}.csv', sep=",", na_rep='NaN', encoding='utf-8-sig')
         plt.rcParams['axes.unicode_minus'] = False
         classes = ['food', 'transportation', 'apparel', 'saving', 'entertainment', 'etc']
 
