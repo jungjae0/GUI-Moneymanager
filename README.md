@@ -1,23 +1,33 @@
-# 2022-1_programming_termproject
-💻2022년 1학기 프로그래밍 원리와 실습 기말과제💻
-
-1. 사용자 확인
-messagebox에서 입력한 이름에 따라
-- 이미 파일이 있으면 열기
-- 파일이 없으면 새로 생성
-
-2. 사용자의 정보 입력
-* 날짜: 2022-05-19
-* 수입: 10000
-* 지출: 5000
-* 항목: "text"
-* 현재금액: 5000
-
-3. 가계부<br>
-
-4. 지출그래프(앞에 항목들이 다 완성되면)
-
-5. 탭
-
-![image](https://user-images.githubusercontent.com/93760723/169250130-238aca28-cb99-454f-951e-e59eaf68f276.png)
-
+# GUI가계부
+### 자산관리자
+***
+### 개발환경 및 사용 모듈
+* python
+```python
+import tkinter as tk
+from tkinter import ttk
+import sqlite3
+import pandas as pd
+import matplotlib.pyplot as plt
+from tkinter import simpledialog
+```
+***
+### 프로젝트 배경 및 목표
+* 복잡하지 않고 간단한 가계부
+* 꼭 필요한 가계부 기능을 담은 프로그램
+***
+### GUI 가계부 기능
+* 사용자의 이름을 입력 후 개인 데이터 베이스 생성
+* 추가, 삭제, 초기화 기능
+* 소비 항목별 파이차트 출력
+* 가계부 CSV 파일
+***
+### 실행 결과
+![image](https://user-images.githubusercontent.com/93760723/174279296-7f16bba3-d7da-4d03-b627-677ebaaed2d2.png)
+***
+### 발표 자료
+***
+### 보고서
+GUI 가계부에 대한 더 자세한 내용을 담았습니다.
+***
+### 데모 비디오
