@@ -25,10 +25,3 @@ from tkinter import simpledialog
 ***
 ### 실행 결과
 ![image](https://user-images.githubusercontent.com/93760723/174279296-7f16bba3-d7da-4d03-b627-677ebaaed2d2.png)
-***
-### 발표 자료
-***
-### 보고서
-GUI 가계부에 대한 더 자세한 내용을 담았습니다.
-***
-### 데모 비디오
